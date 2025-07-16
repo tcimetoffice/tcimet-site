@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meteorology Department - Turks and Caicos Islands Airports Authority</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f2f2f2;
+    }
+    header {
+      background: #0077b6;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    nav {
+      background: #023e8a;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: white;
+      padding: 15px 20px;
+      text-decoration: none;
+      display: block;
+    }
+    nav a:hover {
+      background: #0077b6;
+    }
+    section {
+      padding: 20px;
+      max-width: 1000px;
+      margin: auto;
+      background: white;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+    footer {
+      background: #023e8a;
+      color: white;
+      text-align: center;
+      padding: 20px 10px;
+      margin-top: 20px;
+    }
+    .social-icons {
+      margin-top: 10px;
+    }
+    .social-icons a {
+      margin: 0 10px;
+      display: inline-block;
+    }
+    .social-icons img {
+      height: 32px;
+      width: 32px;
+      vertical-align: middle;
+    }
+
+  .alert-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.alert-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: #f5f5f5;
+  border-left: 6px solid #0077b6;
+  padding: 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  flex: 1 1 200px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.alert-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.alert-card .flag {
+  font-size: 2rem;
+}
+
+.alert-card .label {
+  font-weight: bold;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+.alert-card .lang {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 0.25rem;
+}
+
+.alert-card .alert-summary {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: #222;
+  max-height: 4.5em; /* approx 3 lines */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 5px;
+  width: 100%;
+}
+
+/* Border colors for each language */
+.alert-card.en { border-color: #0077b6; }
+.alert-card.es { border-color: #f4a261; }
+.alert-card.ht { border-color: #e63946; }
+
+/* Pulse animation when alert active */
+@keyframes pulseRedGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 10px 10px rgba(230, 57, 70, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(230, 57, 70, 0);
+  }
+}
+
+.alert-card.active {
+  animation: pulseRedGlow 2s infinite;
+}
+  </style>
+</head>
+<body>
+
+  <header style="background: #0077b6; color: white; padding: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+    <div>
+      <h1 style="margin: 0;">Meteorology Department</h1>
+      <p style="margin: 0;">Turks and Caicos Islands Airports Authority</p>
+    </div>
+  
+    <!-- Social Media Follow Section aligned right -->
+    <div style="display: flex; align-items: center; gap: 12px; font-weight: bold; white-space: nowrap;">
+      <span>Follow Us on Social Media:</span>
+      <a href="https://www.facebook.com" target="_blank" aria-label="Facebook" style="color: white;">
+        <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook logo" style="height:24px; width:24px;">
+      </a>
+      <a href="https://www.twitter.com" target="_blank" aria-label="Twitter" style="color: white;">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter logo" style="height:24px; width:24px;">
+      </a>
+      <a href="https://www.instagram.com" target="_blank" aria-label="Instagram" style="color: white;">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram logo" style="height:24px; width:24px;">
+      </a>
+      <a href="https://www.youtube.com/@TCINationalWeatherService" target="_blank" aria-label="YouTube" style="color: white;">
+        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube logo" style="height:24px; width:24px;">
+      </a>
+      <a href="https://whatsapp.com/channel/0029VaIwxeqJZg4BmM48Cx2r" target="_blank" aria-label="WhatsApp Broadcast Channel" style="color: white;">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp logo" style="height:24px; width:24px;">
+      </a>
+    </div>
+  </header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="current-weather.html">Current Weather</a>
+    <a href="aviation.html">Aviation</a>
+    <a href="forecast.html">Forecasts</a>
+    <a href="tropical-weather.html">Tropical Weather</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+
+  <div class="crawl-container">
+  <div id="capAlertCrawl" class="crawl-text">
+    🚨 Loading latest alert from TCI Emergency Alerts...
+  </div>
+</div>
+
+<style>
+.crawl-container {
+  overflow: hidden;
+  white-space: nowrap;
+  background: #d90429;
+  color: white;
+  padding: 10px 0;
+  position: relative;
+  font-size: 1.1rem;
+}
+
+.crawl-text {
+  display: inline-block;
+  padding-left: 100%;
+  animation: crawl 20s linear infinite;
+}
+
+@keyframes crawl {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+</style>
+
+  <script type="text/javascript" src="https://weather.allmeteo.com/widget/allmeteo.widget.js"> </script>
+
+  <section id="current weather">
+    <h2>Howard Hamilton International Airport (Providenciales)</h2>
+    <div class="d-flex justify-content-center">
+      <table>
+          <tr>
+              <td>
+                  <div style="width: 400px; height: 450px; border: 5px solid lightskyblue;">
+                      <div id="allm01" class="allmeteo-widget" data-ws="2307LH078"></div>
+                  </div>
+              </td>
+              <td>
+                  <div style="width: 400px; height: 450px; border: 5px solid lightskyblue;">
+                      <div id="allm01w" class="allmeteo-widget" data-ws="2308LW113" runway="10, 28"></div>
+                  </div>
+              </td>
+          </tr>
+      </table>
+    </div>
+    
+    <br>
+    <h2>JAGS McCartney International Airport (Grand Turk)</h2>
+    <div class="d-flex justify-content-center">
+      <table>
+          <tr>
+              <td>
+                  <div style="width: 400px; height: 450px; border: 5px solid lightskyblue;">
+                    <div id="allm01" class="allmeteo-widget" data-ws="2307LH079"></div>
+                  </div>
+              </td>
+              <td>
+                  <div style="width: 400px; height: 450px; border: 5px solid lightskyblue;">
+                    <div id="allm01w" class="allmeteo-widget" data-ws="2306LW170" runway="12, 30"></div>
+                  </div>
+              </td>
+          </tr>
+      </table>
+    </div>
+    <br>
+    
+    <h2>Norman B. Saunders Sr. International Airport (South Caicos)</h2>
+    <div class="d-flex justify-content-center">
+      <table>
+          <tr>
+              <td>
+                  <div style="width: 400px; height: 450px; border: 5px solid lightskyblue;">
+                      <div id="allm01" class="allmeteo-widget" data-ws="2308LH036"></div>
+                  </div>
+              </td>
+              <td>
+                  <div style="width: 400px; height: 450px; border: 5px solid lightskyblue;">
+                      <div id="allm01w" class="allmeteo-widget" data-ws="2306LW171" runway="11, 29"></div>
+                  </div>
+              </td>
+          </tr>
+      </table>
+    </div>
+    <br>
+  </section>
+
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <p>Email: tci.metoffice@tciairports.tc<br>Phone: +1 (649) 946-4420</p>
+  </section>
+
+  <footer class="footer">
+    <p>© 2025 Turks and Caicos Islands Airports Authority Meteorology Department</p>
+    <div style="margin-top: 10px; display: inline-flex; align-items: center; justify-content: center; gap: 10px;">
+      <span>Follow Us on Social Media:</span>
+      <a href="https://www.facebook.com" target="_blank" aria-label="Facebook">
+        <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook logo" style="height:32px; width:32px; vertical-align:middle;">
+      </a>
+      <a href="https://www.twitter.com" target="_blank" aria-label="Twitter" style="margin-left: 10px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter logo" style="height:32px; width:32px; vertical-align:middle;">
+      </a>
+      <a href="https://www.instagram.com" target="_blank" aria-label="Instagram" style="margin-left: 10px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram logo" style="height:32px; width:32px; vertical-align:middle;">
+      </a>
+      <a href="https://www.youtube.com/@TCINationalWeatherService" target="_blank" aria-label="YouTube">
+        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube logo" style="height:24px; width:24px; vertical-align:middle;">
+      </a>
+    </div>
+  </footer>
+
+      <!-- 🚀 Script to Load Latest Alert from CAP RSS -->
+  <script>
+    async function loadCAPAlert() {
+      const proxyUrl = "https://api.allorigins.win/get?url=";
+      const feedUrl = encodeURIComponent("https://cap-sources.s3.amazonaws.com/tc-gov-en/rss.xml");
+
+      try {
+        const response = await fetch(`${proxyUrl}${feedUrl}`);
+        const data = await response.json();
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(data.contents, "application/xml");
+
+        const firstItem = xml.querySelector("item");
+        const title = firstItem.querySelector("title").textContent;
+        const description = firstItem.querySelector("description").textContent;
+
+        const alertText = `🚨 ${title}: ${description}`;
+        document.getElementById("capAlertCrawl").textContent = alertText;
+      } catch (error) {
+        document.getElementById("capAlertCrawl").textContent = "TCI EMERGENCY ALERTS NEWS FEED ⚠️ No new alerts at the moment.";
+        console.error("Error fetching CAP feed:", error);
+      }
+    }
+
+    loadCAPAlert();
+
+    async function fetchLatestAlert(cardId, feedUrl) {
+  const proxyUrl = "https://api.allorigins.win/get?url=";
+  try {
+    const response = await fetch(proxyUrl + encodeURIComponent(feedUrl));
+    const data = await response.json();
+
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(data.contents, "application/xml");
+
+    const firstItem = xml.querySelector("item");
+    if (!firstItem) {
+      document.querySelector(`#${cardId} .alert-summary`).textContent = "No active alerts.";
+      document.getElementById(cardId).classList.remove("active");
+      return;
+    }
+
+    const title = firstItem.querySelector("title").textContent;
+    const descriptionNode = firstItem.querySelector("description");
+    const description = descriptionNode ? descriptionNode.textContent : "";
+
+    // Show the title + first 150 chars of description
+    const summary = `${title} - ${description.substring(0, 150)}${description.length > 150 ? "..." : ""}`;
+    const card = document.getElementById(cardId);
+
+    card.querySelector(".alert-summary").textContent = summary;
+    card.classList.add("active");
+  } catch (error) {
+    console.error(`Error loading alerts for ${cardId}`, error);
+    document.querySelector(`#${cardId} .alert-summary`).textContent = "Failed to load alerts.";
+  }
+}
+
+fetchLatestAlert("alert-en", "https://cap-sources.s3.amazonaws.com/tc-gov-en/rss.xml");
+fetchLatestAlert("alert-es", "https://cap-sources.s3.amazonaws.com/tc-gov-es/rss.xml");
+fetchLatestAlert("alert-ht", "https://cap-sources.s3.amazonaws.com/tc-gov-ht/rss.xml");
+
+  </script>
+
+</body>
+</html>
