@@ -229,7 +229,7 @@
       throughout the season.</p>
   
     <h2>Tropical Cyclone Outlook</h2>
-    <p id="update-time" style="font-style: italic; color: #555;">Last updated: Fetching...</p>
+    <p id="tropical-update-date" style="font-style: italic; color: #555;">Last updated: Fetching...</p>
 
     <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
       <div style="text-align: center;">
@@ -378,6 +378,29 @@ fetchLatestAlert("alert-ht", "https://cap-sources.s3.amazonaws.com/tc-gov-ht/rss
 
   </script>
 
+<script>
+  async function fetchTropicalOutlook() {
+    const proxyUrl = "https://api.allorigins.win/get?url=";
+    const feedUrl = encodeURIComponent("https://www.nhc.noaa.gov/gtwo.xml?basin=atlc&fdays=2");
 
+    try {
+      const response = await fetch(proxyUrl + feedUrl);
+      const data = await response.json();
+
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(data.contents, "application/xml");
+
+      const pubDate = xml.querySelector("pubDate")?.textContent || "Date unavailable";
+      document.getElementById("tropical-update-date").textContent = `Last Updated: ${pubDate}`;
+    } catch (error) {
+      console.error("Error fetching tropical weather data:", error);
+      document.getElementById("tropical-update-date").textContent = "⚠️ Error fetching tropical update.";
+    }
+  }
+
+  // Call the function
+  fetchTropicalOutlook();
+</script>
+  
 </body>
 </html>
