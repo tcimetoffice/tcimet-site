@@ -148,6 +148,7 @@
 </head>
 <body>
 
+  <!-- Header -->
   <header style="background: #0077b6; color: white; padding: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
   <!-- Left side: Logo and Title -->
   <div style="display: flex; align-items: center; gap: 15px;">
@@ -179,6 +180,7 @@
     </div>
   </header>
 
+   <!-- Navigation -->
   <nav>
     <a href="index.html">Home</a>
     <a href="about.html">About</a>
@@ -189,39 +191,44 @@
     <a href="contact.html">Contact</a>
   </nav>
 
-  <div class="cap-ticker">
-    <div id="capAlertCrawl">🚨 Loading latest alert from TCI Emergency Alerts...</div>
+   <!-- CAP Alert Ticker -->
+  <div class="cap-ticker" style="background: red; color: white; overflow: hidden; white-space: nowrap; position: relative; font-size: 1.1em;">
+    <div id="capAlertCrawl" style="display: inline-block; padding-left: 100%; animation: scroll-left 25s linear infinite;"></div>
   </div>
 
 <style>
-.cap-ticker {
-  overflow: hidden;
-  white-space: nowrap;
-  background: #d90429;
-  color: white;
-  padding: 10px 0;
-  position: relative;
-  font-size: 1.1rem;
-}
-
-.cap-ticker #capAlertCrawl {
-  display: inline-block;
-  padding-left: 100%;
-  animation: scroll-left 30s linear infinite;
-}
-
 /*Pause when hovered */
 .cap-ticker:hover #capAlertCrawl {
   animation-play-state: paused;
 }
 
-@keyframes crawl {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
-}
 </style>
 
+  <!-- Main Section -->
   <section id="aviation">
+    <main style="padding: 20px; max-width: 1000px; margin: auto; background: white; margin-top: 10px; border-radius: 8px;">
+    <h2>Aviation Products</h2>
+
+    <section>
+      <h3>METAR (MBPV)</h3>
+      <iframe src="https://tgftp.nws.noaa.gov/weather/current/MBPV.html" style="width: 100%; height: 500px; border: none;"></iframe>
+    </section>
+
+    <section>
+      <h3>TAF (MBPV)</h3>
+      <iframe src="https://tgftp.nws.noaa.gov/data/forecasts/taf/stations/MBPV.TXT" style="width: 100%; height: 500px; border: none;"></iframe>
+    </section>
+
+    <section>
+      <h3>SigWX Charts (FL100-450)</h3>
+      <p>Links to Significant Weather Charts for different flight levels:</p>
+      <ul>
+        <li><a href="https://aviationweather.gov/files/swh/FAHWF01.gif" target="_blank">FL100-250 Chart</a></li>
+        <li><a href="https://aviationweather.gov/files/swh/FAHWF02.gif" target="_blank">FL250-630 Chart</a></li>
+      </ul>
+    </section>
+  </main>
+    
     <h2>Aviation Weather (METAR & TAF)</h2>
     <p>Click the links below to view the latest METAR and TAF reports for airports in the Turks and Caicos Islands.</p>
 
@@ -278,10 +285,6 @@
 
   </section>
 
-  <section id="contact">
-    <h2>Contact Us</h2>
-    <p>Email: tci.metoffice@tciairports.tc<br>Phone: +1 (649) 946-4420</p>
-  </section>
 
   <footer class="footer">
     <p>© 2025 Turks and Caicos Islands Airports Authority Meteorology Department</p>
@@ -318,7 +321,6 @@
         const title = firstItem.querySelector("title").textContent;
         const description = firstItem.querySelector("description").textContent;
 
-        //const alertText = `🚨 ${title}`;
         const alertText = `🚨 ${title}: ${description}`;
         document.getElementById("capAlertCrawl").textContent = alertText;
       } catch (error) {
@@ -366,6 +368,14 @@ fetchLatestAlert("alert-es", "https://cap-sources.s3.amazonaws.com/tc-gov-es/rss
 fetchLatestAlert("alert-ht", "https://cap-sources.s3.amazonaws.com/tc-gov-ht/rss.xml");
 
   </script>
+
+    <!-- Scroll Animation -->
+  <style>
+    @keyframes scroll-left {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+  </style>
 
 </body>
 </html>
