@@ -299,7 +299,7 @@
     </div>
   </footer>
 
-    <!-- 🚀 Script to Load Latest Alert from CAP RSS -->
+      <!-- 🚀 Script to Load Latest Alert from CAP RSS -->
   <script>
     async function loadCAPAlert() {
       const proxyUrl = "https://api.allorigins.win/get?url=";
@@ -314,10 +314,14 @@
         const firstItem = xml.querySelector("item");
         const title = firstItem.querySelector("title").textContent;
         const description = firstItem.querySelector("description").textContent;
+        const link = firstItem.querySelector("link")?.textContent || "https://cap-sources.s3.amazonaws.com/tc-gov-en/rss.xml";
 
-        //const alertText = `🚨 ${title}`;
-        const alertText = `🚨 ${title}: ${description}`;
-        document.getElementById("capAlertCrawl").textContent = alertText;
+        const alertHTML = `<a href="${link}" target="_blank" style="color: white; text-decoration: underline;">
+          🚨 ${title}: ${description}
+        </a>`;
+
+        //const alertText = `🚨 ${title}: ${description}`;
+        document.getElementById("capAlertCrawl").innerHTML = alertHTML;
       } catch (error) {
         document.getElementById("capAlertCrawl").textContent = "TCI EMERGENCY ALERTS NEWS FEED ⚠️ No new alerts at the moment.";
         console.error("Error fetching CAP feed:", error);
@@ -335,22 +339,32 @@
     const parser = new DOMParser();
     const xml = parser.parseFromString(data.contents, "application/xml");
 
-    const firstItem = xml.querySelector("item");
+    const items = xml.getElementsByTagName("item");
+    const firstItem = items.length > 0 ? items[0] : null;
+
     if (!firstItem) {
       document.querySelector(`#${cardId} .alert-summary`).textContent = "No active alerts.";
       document.getElementById(cardId).classList.remove("active");
       return;
     }
 
-    const title = firstItem.querySelector("title").textContent;
-    const descriptionNode = firstItem.querySelector("description");
-    const description = descriptionNode ? descriptionNode.textContent : "";
+    const getTextFromTag = (parent, tag) => {
+      const el = parent.getElementsByTagName(tag)[0];
+      return el ? el.textContent : "";
+    };
+
+    const title = getTextFromTag(firstItem, "title");
+    const description = getTextFromTag(firstItem, "description");
+    const link = getTextFromTag(firstItem, "link");  
 
     // Show the title + first 150 chars of description
     const summary = `${title} - ${description.substring(0, 150)}${description.length > 150 ? "..." : ""}`;
     const card = document.getElementById(cardId);
 
     card.querySelector(".alert-summary").textContent = summary;
+    card.setAttribute("onclick", `window.open('${link}', '_blank')`);
+    card.style.cursor = "pointer";
+    
     card.classList.add("active");
   } catch (error) {
     console.error(`Error loading alerts for ${cardId}`, error);
@@ -364,35 +378,6 @@ fetchLatestAlert("alert-ht", "https://cap-sources.s3.amazonaws.com/tc-gov-ht/rss
 
   </script>
 
-  <script>
-  async function loadCAPAlert() {
-    const proxyUrl = "https://api.allorigins.win/get?url=";
-    const feedUrl = encodeURIComponent("https://cap-sources.s3.amazonaws.com/tc-gov-en/rss.xml");
-
-    try {
-      const response = await fetch(`${proxyUrl}${feedUrl}`);
-      const data = await response.json();
-      const parser = new DOMParser();
-      const xml = parser.parseFromString(data.contents, "application/xml");
-
-      const firstItem = xml.querySelector("item");
-      const title = firstItem.querySelector("title").textContent;
-      const description = firstItem.querySelector("description").textContent;
-      const link = firstItem.querySelector("link")?.textContent || "https://cap-sources.s3.amazonaws.com/tc-gov-en/rss.xml";
-
-      const alertHTML = `<a href="${link}" target="_blank" style="color: white; text-decoration: underline;">
-        🚨 ${title}: ${description}
-      </a>`;
-
-      document.getElementById("capAlertCrawl").innerHTML = alertHTML;
-    } catch (error) {
-      document.getElementById("capAlertCrawl").textContent = "⚠️ No new alerts at the moment.";
-      console.error("Error fetching CAP feed:", error);
-    }
-  }
-
-  loadCAPAlert();
-</script>
 
 </body>
 </html>
