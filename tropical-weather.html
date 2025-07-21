@@ -222,19 +222,25 @@
 </style>
 
 <section id="tropical-cyclone">
+    <h2>About the North Atlantic Hurricane Season</h2>
+    <p>The North Atlantic Hurricane Season runs from June 1 to November 30 each year. During this period, the Atlantic Ocean, Caribbean Sea,
+      and Gulf of Mexico are most active for tropical cyclone development. Storms are monitored closely by regional meteorological centers like 
+      the National Hurricane Center (NHC) and local weather services. Residents in vulnerable areas are encouraged to stay informed and prepared 
+      throughout the season.</p>
+  
     <h2>Tropical Cyclone Outlook</h2>
     <p id="update-time" style="font-style: italic; color: #555;">Last updated: Fetching...</p>
-  
+
     <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
       <div style="text-align: center;">
-        <h4>2-Day Tropical Formation Chance</h4>
+        <h4 style="font-size: 1.5em; margin-bottom: 10px;">2-Day Tropical Formation Chance</h4>
         <a href="https://www.nhc.noaa.gov/xgtwo/two_atl_2d0.png" target="_blank">
           <img src="https://www.nhc.noaa.gov/xgtwo/two_atl_2d0.png" alt="2-Day Tropical Outlook" style="max-width: 100%; height: auto; border-radius: 8px;">
         </a>
       </div>
   
       <div style="text-align: center;">
-        <h4>7-Day Tropical Outlook</h4>
+        <h4 style="font-size: 1.5em; margin-bottom: 10px;">7-Day Tropical Outlook</h4>
         <a href="https://www.nhc.noaa.gov/xgtwo/two_atl_7d0.png" target="_blank">
           <img src="https://www.nhc.noaa.gov/xgtwo/two_atl_7d0.png" alt="7-Day Tropical Outlook" style="max-width: 100%; height: auto; border-radius: 8px;">
         </a>
@@ -242,6 +248,7 @@
     </div>
   
     <div style="margin-top: 20px; text-align: center;">
+      <a href="https://www.nhc.noaa.gov" target="_blank">Visit NHC Main Page</a> |
       <a href="https://www.nhc.noaa.gov/gtwo.php?basin=atlc&fdays=2" target="_blank">➡ Tropical Weather Outlook</a> |
       <a href="https://www.nhc.noaa.gov/text/MIATWDAT.shtml" target="_blank">➡ Tropical Weather Discussion</a>
     </div>
@@ -356,6 +363,36 @@ fetchLatestAlert("alert-es", "https://cap-sources.s3.amazonaws.com/tc-gov-es/rss
 fetchLatestAlert("alert-ht", "https://cap-sources.s3.amazonaws.com/tc-gov-ht/rss.xml");
 
   </script>
+
+  <script>
+  async function loadCAPAlert() {
+    const proxyUrl = "https://api.allorigins.win/get?url=";
+    const feedUrl = encodeURIComponent("https://cap-sources.s3.amazonaws.com/tc-gov-en/rss.xml");
+
+    try {
+      const response = await fetch(`${proxyUrl}${feedUrl}`);
+      const data = await response.json();
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(data.contents, "application/xml");
+
+      const firstItem = xml.querySelector("item");
+      const title = firstItem.querySelector("title").textContent;
+      const description = firstItem.querySelector("description").textContent;
+      const link = firstItem.querySelector("link")?.textContent || "https://cap-sources.s3.amazonaws.com/tc-gov-en/rss.xml";
+
+      const alertHTML = `<a href="${link}" target="_blank" style="color: white; text-decoration: underline;">
+        🚨 ${title}: ${description}
+      </a>`;
+
+      document.getElementById("capAlertCrawl").innerHTML = alertHTML;
+    } catch (error) {
+      document.getElementById("capAlertCrawl").textContent = "⚠️ No new alerts at the moment.";
+      console.error("Error fetching CAP feed:", error);
+    }
+  }
+
+  loadCAPAlert();
+</script>
 
 </body>
 </html>
