@@ -189,7 +189,7 @@
     <a href="contact.html">Contact</a>
   </nav>
 
-  <div class="cap-ticker">
+ <div class="cap-ticker">
     <div id="capAlertCrawl">🚨 Loading latest alert from TCI Emergency Alerts...</div>
   </div>
 
@@ -207,7 +207,7 @@
 .cap-ticker #capAlertCrawl {
   display: inline-block;
   padding-left: 100%;
-  animation: scroll-left 30s linear infinite;
+  animation: scroll-left 40s linear infinite;
 }
 
 /*Pause when hovered */
@@ -215,7 +215,7 @@
   animation-play-state: paused;
 }
 
-@keyframes crawl {
+@keyframes scroll-left {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
@@ -297,7 +297,7 @@
   </div>
 </footer>
 
-      <!-- 🚀 Script to Load Latest Alert from CAP RSS -->
+       <!-- 🚀 Script to Load Latest Alert from CAP RSS -->
   <script>
     async function loadCAPAlert() {
       const proxyUrl = "https://api.allorigins.win/get?url=";
