@@ -32,18 +32,32 @@
     nav a:hover {
       background: #0077b6;
     }
-    section {
+    main {
       padding: 20px;
-      max-width: 1000px;
+      max-width: 900px;
       margin: auto;
-      background: white;
-      margin-top: 10px;
-      border-radius: 8px;
+    }
+    .map-container {
+      margin-bottom: 20px;
     }
     iframe {
       width: 100%;
-      height: 600px;
+      height: 400px;
       border: none;
+      border-radius: 8px;
+    }
+    .contact-info {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #023e8a;
+    }
+    p {
+      margin: 8px 0;
+      line-height: 1.6;
     }
     footer {
       background: #023e8a;
@@ -111,35 +125,35 @@
     <a href="external-links.html">External Links</a>
   </nav>
 
+  <header>
+    <h1>Contact Us</h1>
+  </header>
 
-<section id="contact" style="padding: 40px 20px;">
-  <h2 style="text-align: center;">Contact Us</h2>
+  <main>
+    <div class="map-container">
+      <h2>Our Location</h2>
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3735.2849780106636!2d-72.2706469!3d21.7727629!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8921a3fa961e9d7b%3A0x58ce09814d6b02cb!2sTurks%20and%20Caicos%20Islands%20Airports%20Authority!5e0!3m2!1sen!2stc!4v1721669300156!5m2!1sen!2stc"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+
+    <div class="contact-info">
+      <p><strong>Address:</strong><br>
+        Walter Cox Snr Administration Building,<br>
+        Turks and Caicos Islands Airports Authority,<br>
+        Providenciales, Turks and Caicos Islands
+      </p>
+      <p><strong>Phone:</strong> +1 (649) 946-4420</p>
+      <p><strong>Email:</strong> <a href="mailto:tci.metoffice@tciairports.tc">tci.metoffice@tciairports.tc</a></p>
+      <p><strong>Hours:</strong><br>
+        Monday to Friday: 8:30 AM – 4:30 PM
+      </p>
+    </div>
+  </main>
   
-  <!-- Google Map Embed -->
-  <div style="width: 100%; height: 400px; margin-bottom: 20px;">
-    <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.048719166382!2d-72.271072024969!3d21.775236180001356!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x893bfcadf5c3f5cd%3A0xe89804f8e3c282c0!2sWalter%20Cox%20Snr%20Building%2C%20Airport%20Rd%2C%20Providenciales%2C%20Turks%20and%20Caicos%20Islands!5e0!3m2!1sen!2stc!4v1721680000000!5m2!1sen!2stc"
-      width="100%"
-      height="100%"
-      style="border:0;"
-      allowfullscreen=""
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-  </div>
-
-  <!-- Contact Information -->
-  <div style="max-width: 600px; margin: 0 auto; font-size: 1.1rem; line-height: 1.8;">
-    <p><strong>Location:</strong><br>
-    Walter Cox Snr Administration Building,<br>
-    Turks and Caicos Islands Airports Authority,<br>
-    Providenciales, Turks and Caicos Islands</p>
-
-    <p><strong>Phone:</strong> +1 (649) 946-4420</p>
-    <p><strong>Email:</strong> <a href="mailto:tci.metoffice@tciairports.tc">tci.metoffice@tciairports.tc</a></p>
-    <p><strong>Hours:</strong> Monday to Friday, 8:30 AM – 4:30 PM</p>
-  </div>
-</section>
 
 <footer class="footer" style="background: #0077b6; color: white; padding: 20px;">
   <p style="text-align: center; margin-bottom: 20px;">
