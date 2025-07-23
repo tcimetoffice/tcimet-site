@@ -273,84 +273,47 @@
   </div>
 </footer>
 
-      <!-- 🚀 Script to Load Latest Alert from CAP RSS -->
+         <!-- 🚀 Script to Load Latest Alert from CAP RSS -->
   <script>
     async function loadCAPAlert() {
       const proxyUrl = "https://api.allorigins.win/get?url=";
       const feedUrl = encodeURIComponent("https://cap-sources.s3.amazonaws.com/tc-gov-en/rss.xml");
+      const ticker = document.getElementById("capTicker");
 
       try {
-        const response = await fetch(`${proxyUrl}${feedUrl}`);
-        const data = await response.json();
+        const response = await fetch(feedUrl);
+        const xmlText = await response.text();
         const parser = new DOMParser();
-        const xml = parser.parseFromString(data.contents, "application/xml");
+        const xmlDoc = parser.parseFromString(xmlText, "application/xml");
 
-        const firstItem = xml.querySelector("item");
-        const title = firstItem.querySelector("title").textContent;
-        const description = firstItem.querySelector("description").textContent;
-        const link = firstItem.querySelector("link")?.textContent || "https://cap-sources.s3.amazonaws.com/tc-gov-en/rss.xml";
+        const items = xmlDoc.querySelectorAll("item");
+        const now = new Date();
+        let alertHTML = "";
 
-        const alertHTML = `<a href="${link}" target="_blank" style="color: white; text-decoration: underline;">
-          🚨 ${title}: ${description}
-        </a>`;
+        items.forEach(item => {
+          const title = item.querySelector("title")?.textContent;
+          const description = firstItem.querySelector("description").textContent;
+          const link = item.querySelector("link")?.textContent;
 
-        //const alertText = `🚨 ${title}: ${description}`;
-        document.getElementById("capAlertCrawl").innerHTML = alertHTML;
+          const capExpires = item.querySelector("cap\\:expires, expires");
+          const expiresText = capExpires?.textContent;
+          const expiresDate = expiresText ? new Date(expiresText) : null;
+
+          if (!expiresDate || expiresDate > now) {
+            alertHTML += `<a href="${link}" target="_blank">${title}:${description}</a>`;
+          }
+        });
+
+        document.getElementById("capAlertCrawl").innerHTML = `<span>${alertHTML || "TCI EMERGENCY ALERTS NEWS FEED ⚠️ No active alerts."}</span>`;
       } catch (error) {
-        document.getElementById("capAlertCrawl").textContent = "TCI EMERGENCY ALERTS NEWS FEED ⚠️ No new alerts at the moment.";
-        console.error("Error fetching CAP feed:", error);
+        document.getElementById("capAlertCrawl").innerHTML = `<span>Unable to load alerts</span>`;
+        console.error("CAP alert load error:", error);
       }
     }
-
-    loadCAPAlert();
-
-    async function fetchLatestAlert(cardId, feedUrl) {
-  const proxyUrl = "https://api.allorigins.win/get?url=";
-  try {
-    const response = await fetch(proxyUrl + encodeURIComponent(feedUrl));
-    const data = await response.json();
-
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(data.contents, "application/xml");
-
-    const items = xml.getElementsByTagName("item");
-    const firstItem = items.length > 0 ? items[0] : null;
-
-    if (!firstItem) {
-      document.querySelector(`#${cardId} .alert-summary`).textContent = "No active alerts.";
-      document.getElementById(cardId).classList.remove("active");
-      return;
-    }
-
-    const getTextFromTag = (parent, tag) => {
-      const el = parent.getElementsByTagName(tag)[0];
-      return el ? el.textContent : "";
-    };
-
-    const title = getTextFromTag(firstItem, "title");
-    const description = getTextFromTag(firstItem, "description");
-    const link = getTextFromTag(firstItem, "link");  
-
-    // Show the title + first 150 chars of description
-    const summary = `${title} - ${description.substring(0, 150)}${description.length > 150 ? "..." : ""}`;
-    const card = document.getElementById(cardId);
-
-    card.querySelector(".alert-summary").textContent = summary;
-    card.setAttribute("onclick", `window.open('${link}', '_blank')`);
-    card.style.cursor = "pointer";
     
-    card.classList.add("active");
-  } catch (error) {
-    console.error(`Error loading alerts for ${cardId}`, error);
-    document.querySelector(`#${cardId} .alert-summary`).textContent = "Failed to load alerts.";
-  }
-}
+    loadCAPAlert();
+    </script>
 
-fetchLatestAlert("alert-en", "https://cap-sources.s3.amazonaws.com/tc-gov-en/rss.xml");
-fetchLatestAlert("alert-es", "https://cap-sources.s3.amazonaws.com/tc-gov-es/rss.xml");
-fetchLatestAlert("alert-ht", "https://cap-sources.s3.amazonaws.com/tc-gov-ht/rss.xml");
-
-  </script>
 
 </body>
 </html>
