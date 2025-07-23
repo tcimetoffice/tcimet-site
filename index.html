@@ -364,13 +364,13 @@
 
     <script>
     async function fetchLatestAlert(cardId, feedUrl) {
-  const proxyUrl = "https://api.allorigins.win/get?url=";
-  try {
-    const response = await fetch(proxyUrl + encodeURIComponent(feedUrl));
-    const data = await response.json();
+      const proxyUrl = "https://api.allorigins.win/get?url=";
+      try {
+        const response = await fetch(proxyUrl + encodeURIComponent(feedUrl));
+        const data = await response.json();
 
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(data.contents, "application/xml");
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(data.contents, "application/xml");
 
     //const items = xml.getElementsByTagName("item");
     //const firstItem = items.length > 0 ? items[0] : null;
