@@ -407,24 +407,32 @@
 
     //Updated so that the alert cards only show active alerts
       const items = xml.getElementsByTagName("item");
-      const now = new Date();
-      let activeItem = null;
+      let activeAlert = null;
 
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
-        const expiresEl = item.getElementsByTagName("cap:expires")[0] || item.getElementsByTagName("expires")[0];
-        const expires = expiresEl ? new Date(expiresEl.textContent) : null;
+        const expiresTag = Array.from(item.getElementsByTagName("*")).find(tag => tag.localName === "expires");
+        const expiresText = expiresTag ? expiresTag.textContent : "";
 
-        if (!expires || expires > now) {
-          activeItem = item;
+        if (!expiresText) continue;
+
+        const expires = Date.parse(expiresText);
+        if (isNaN(expires)) continue;
+
+        const now = Date.now();
+        if (expires > now) {
+          activeAlert = item;
           break;
         }
       }
 
       const card = document.getElementById(cardId);
-      if (!activeItem) {
+
+      if (!activeAlert) {
         card.querySelector(".alert-summary").textContent = "No active alerts.";
         card.classList.remove("active");
+        card.style.cursor = "default";
+        card.removeAttribute("onclick");
         return;
       }
 
@@ -433,9 +441,9 @@
         return el ? el.textContent : "";
       };
 
-      const title = getTextFromTag(activeItem, "title");
-      const description = getTextFromTag(activeItem, "description");
-      const link = getTextFromTag(activeItem, "link");
+      const title = getTextFromTag(activeAlert, "title");
+      const description = getTextFromTag(activeAlert, "description") || "";
+      const link = getTextFromTag(activeAlert, "link");
 
       const summary = `${title} - ${description.substring(0, 150)}${description.length > 150 ? "..." : ""}`;
 
@@ -443,12 +451,15 @@
       card.setAttribute("onclick", `window.open('${link}', '_blank')`);
       card.style.cursor = "pointer";
       card.classList.add("active");
-
     } catch (error) {
       console.error(`Error loading alerts for ${cardId}`, error);
-      document.querySelector(`#${cardId} .alert-summary`).textContent = "Failed to load alerts.";
+      const card = document.getElementById(cardId);
+      card.querySelector(".alert-summary").textContent = "Failed to load alerts.";
+      card.classList.remove("active");
+      card.style.cursor = "default";
+      card.removeAttribute("onclick");
     }
-  }    
+  }
     
 
 fetchLatestAlert("alert-en", "https://cap-sources.s3.amazonaws.com/tc-gov-en/rss.xml");
