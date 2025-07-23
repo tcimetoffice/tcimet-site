@@ -188,14 +188,12 @@
     <a href="external-links.html">External Links</a>
   </nav>
 
-  <div class="crawl-container">
-  <div id="capAlertCrawl" class="crawl-text">
-    🚨 Loading latest alert from TCI Emergency Alerts...
+  <div class="cap-ticker">
+    <div id="capAlertCrawl">🚨 Loading latest alert from TCI Emergency Alerts...</div>
   </div>
-</div>
 
 <style>
-.crawl-container {
+.cap-ticker {
   overflow: hidden;
   white-space: nowrap;
   background: #d90429;
@@ -205,13 +203,18 @@
   font-size: 1.1rem;
 }
 
-.crawl-text {
+.cap-ticker #capAlertCrawl {
   display: inline-block;
   padding-left: 100%;
-  animation: crawl 20s linear infinite;
+  animation: scroll-left 40s linear infinite;
 }
 
-@keyframes crawl {
+/*Pause when hovered */
+.cap-ticker:hover #capAlertCrawl {
+  animation-play-state: paused;
+}
+
+@keyframes scroll-left {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
@@ -315,7 +318,7 @@
   </div>
 </footer>
 
-    <!-- 🚀 Script to Load Latest Alert from CAP RSS -->
+      <!-- 🚀 Script to Load Latest Alert from CAP RSS -->
   <script>
     async function loadCAPAlert() {
       const proxyUrl = "https://api.allorigins.win/get?url=";
@@ -330,9 +333,14 @@
         const firstItem = xml.querySelector("item");
         const title = firstItem.querySelector("title").textContent;
         const description = firstItem.querySelector("description").textContent;
+        const link = firstItem.querySelector("link")?.textContent || "https://cap-sources.s3.amazonaws.com/tc-gov-en/rss.xml";
 
-        const alertText = `🚨 ${title}: ${description}`;
-        document.getElementById("capAlertCrawl").textContent = alertText;
+        const alertHTML = `<a href="${link}" target="_blank" style="color: white; text-decoration: underline;">
+          🚨 ${title}: ${description}
+        </a>`;
+
+        //const alertText = `🚨 ${title}: ${description}`;
+        document.getElementById("capAlertCrawl").innerHTML = alertHTML;
       } catch (error) {
         document.getElementById("capAlertCrawl").textContent = "TCI EMERGENCY ALERTS NEWS FEED ⚠️ No new alerts at the moment.";
         console.error("Error fetching CAP feed:", error);
@@ -350,22 +358,32 @@
     const parser = new DOMParser();
     const xml = parser.parseFromString(data.contents, "application/xml");
 
-    const firstItem = xml.querySelector("item");
+    const items = xml.getElementsByTagName("item");
+    const firstItem = items.length > 0 ? items[0] : null;
+
     if (!firstItem) {
       document.querySelector(`#${cardId} .alert-summary`).textContent = "No active alerts.";
       document.getElementById(cardId).classList.remove("active");
       return;
     }
 
-    const title = firstItem.querySelector("title").textContent;
-    const descriptionNode = firstItem.querySelector("description");
-    const description = descriptionNode ? descriptionNode.textContent : "";
+    const getTextFromTag = (parent, tag) => {
+      const el = parent.getElementsByTagName(tag)[0];
+      return el ? el.textContent : "";
+    };
+
+    const title = getTextFromTag(firstItem, "title");
+    const description = getTextFromTag(firstItem, "description");
+    const link = getTextFromTag(firstItem, "link");  
 
     // Show the title + first 150 chars of description
     const summary = `${title} - ${description.substring(0, 150)}${description.length > 150 ? "..." : ""}`;
     const card = document.getElementById(cardId);
 
     card.querySelector(".alert-summary").textContent = summary;
+    card.setAttribute("onclick", `window.open('${link}', '_blank')`);
+    card.style.cursor = "pointer";
+    
     card.classList.add("active");
   } catch (error) {
     console.error(`Error loading alerts for ${cardId}`, error);
