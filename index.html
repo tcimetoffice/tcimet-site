@@ -336,7 +336,7 @@
 
         const items = xmlDoc.querySelectorAll("item");
         const now = new Date();
-        let tickerHTML = "";
+        let alertHTML = "";
 
         items.forEach(item => {
           const title = item.querySelector("title")?.textContent;
@@ -348,13 +348,13 @@
           const expiresDate = expiresText ? new Date(expiresText) : null;
 
           if (!expiresDate || expiresDate > now) {
-            tickerHTML += `<a href="${link}" target="_blank">${title}:${description}</a>`;
+            alertHTML += `<a href="${link}" target="_blank">${title}:${description}</a>`;
           }
         });
 
-        ticker.innerHTML = `<span>${tickerHTML || "No active alerts."}</span>`;
+        document.getElementById("capAlertCrawl").innerHTML = `<span>${alertHTML || "TCI EMERGENCY ALERTS NEWS FEED ⚠️ No active alerts."}</span>`;
       } catch (error) {
-        ticker.innerHTML = `<span>Unable to load alerts</span>`;
+        document.getElementById("capAlertCrawl").innerHTML = `<span>Unable to load alerts</span>`;
         console.error("CAP alert load error:", error);
       }
     }
@@ -370,38 +370,84 @@
     const parser = new DOMParser();
     const xml = parser.parseFromString(data.contents, "application/xml");
 
-    const items = xml.getElementsByTagName("item");
-    const firstItem = items.length > 0 ? items[0] : null;
+    //const items = xml.getElementsByTagName("item");
+    //const firstItem = items.length > 0 ? items[0] : null;
 
-    if (!firstItem) {
-      document.querySelector(`#${cardId} .alert-summary`).textContent = "No active alerts.";
-      document.getElementById(cardId).classList.remove("active");
-      return;
-    }
+    //if (!firstItem) {
+    //  document.querySelector(`#${cardId} .alert-summary`).textContent = "No active alerts.";
+    //  document.getElementById(cardId).classList.remove("active");
+    //  return;
+    //}
 
-    const getTextFromTag = (parent, tag) => {
-      const el = parent.getElementsByTagName(tag)[0];
-      return el ? el.textContent : "";
-    };
+    //const getTextFromTag = (parent, tag) => {
+    //  const el = parent.getElementsByTagName(tag)[0];
+    //  return el ? el.textContent : "";
+    //};
 
-    const title = getTextFromTag(firstItem, "title");
-    const description = getTextFromTag(firstItem, "description");
-    const link = getTextFromTag(firstItem, "link");  
+   // const title = getTextFromTag(firstItem, "title");
+   // const description = getTextFromTag(firstItem, "description");
+   // const link = getTextFromTag(firstItem, "link");  
 
-    // Show the title + first 150 chars of description
-    const summary = `${title} - ${description.substring(0, 150)}${description.length > 150 ? "..." : ""}`;
-    const card = document.getElementById(cardId);
+   // // Show the title + first 150 chars of description
+   // const summary = `${title} - ${description.substring(0, 150)}${description.length > 150 ? "..." : ""}`;
+   // const card = document.getElementById(cardId);
 
-    card.querySelector(".alert-summary").textContent = summary;
-    card.setAttribute("onclick", `window.open('${link}', '_blank')`);
-    card.style.cursor = "pointer";
+  //  card.querySelector(".alert-summary").textContent = summary;
+  //  card.setAttribute("onclick", `window.open('${link}', '_blank')`);
+  //  card.style.cursor = "pointer";
     
-    card.classList.add("active");
-  } catch (error) {
-    console.error(`Error loading alerts for ${cardId}`, error);
-    document.querySelector(`#${cardId} .alert-summary`).textContent = "Failed to load alerts.";
-  }
-}
+  //  card.classList.add("active");
+  //} catch (error) {
+  //  console.error(`Error loading alerts for ${cardId}`, error);
+  //  document.querySelector(`#${cardId} .alert-summary`).textContent = "Failed to load alerts.";
+ // }
+//}
+
+    //Updated so that the alert cards only show active alerts
+      const items = xml.getElementsByTagName("item");
+      const now = new Date();
+      let activeItem = null;
+
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        const expiresEl = item.getElementsByTagName("cap:expires")[0] || item.getElementsByTagName("expires")[0];
+        const expires = expiresEl ? new Date(expiresEl.textContent) : null;
+
+        if (!expires || expires > now) {
+          activeItem = item;
+          break;
+        }
+      }
+
+      const card = document.getElementById(cardId);
+      if (!activeItem) {
+        card.querySelector(".alert-summary").textContent = "No active alerts.";
+        card.classList.remove("active");
+        return;
+      }
+
+      const getTextFromTag = (parent, tag) => {
+        const el = parent.getElementsByTagName(tag)[0];
+        return el ? el.textContent : "";
+      };
+
+      const title = getTextFromTag(activeItem, "title");
+      const description = getTextFromTag(activeItem, "description");
+      const link = getTextFromTag(activeItem, "link");
+
+      const summary = `${title} - ${description.substring(0, 150)}${description.length > 150 ? "..." : ""}`;
+
+      card.querySelector(".alert-summary").textContent = summary;
+      card.setAttribute("onclick", `window.open('${link}', '_blank')`);
+      card.style.cursor = "pointer";
+      card.classList.add("active");
+
+    } catch (error) {
+      console.error(`Error loading alerts for ${cardId}`, error);
+      document.querySelector(`#${cardId} .alert-summary`).textContent = "Failed to load alerts.";
+    }
+  }    
+    
 
 fetchLatestAlert("alert-en", "https://cap-sources.s3.amazonaws.com/tc-gov-en/rss.xml");
 fetchLatestAlert("alert-es", "https://cap-sources.s3.amazonaws.com/tc-gov-es/rss.xml");
