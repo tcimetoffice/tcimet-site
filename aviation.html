@@ -192,19 +192,34 @@
     <a href="external-links.html">External Links</a>
   </nav>
 
-   <!-- CAP Alert Ticker -->
-  <div class="cap-ticker" style="background: #d90429; color: white; overflow: hidden; white-space: nowrap; position: relative; padding: 10px 0; font-size: 1.1rem;">
-    <div id="capAlertCrawl" style="display: inline-block; padding-left: 100%; animation: scroll-left 40s linear infinite;"></div>
+  <div class="crawl-container">
+  <div id="capAlertCrawl" class="crawl-text">
+    🚨 Loading latest alert from TCI Emergency Alerts...
   </div>
+</div>
 
 <style>
-/*Pause when hovered */
-.cap-ticker:hover #capAlertCrawl {
-  animation-play-state: paused;
+.crawl-container {
+  overflow: hidden;
+  white-space: nowrap;
+  background: #d90429;
+  color: white;
+  padding: 10px 0;
+  position: relative;
+  font-size: 1.1rem;
 }
 
-</style>
+.crawl-text {
+  display: inline-block;
+  padding-left: 100%;
+  animation: crawl 20s linear infinite;
+}
 
+@keyframes crawl {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+</style>
   <!-- Main Section -->
   <section id="aviation">
     <main style="padding: 20px; max-width: 1000px; margin: auto; background: white; margin-top: 10px; border-radius: 8px;">
@@ -375,14 +390,6 @@ fetchLatestAlert("alert-es", "https://cap-sources.s3.amazonaws.com/tc-gov-es/rss
 fetchLatestAlert("alert-ht", "https://cap-sources.s3.amazonaws.com/tc-gov-ht/rss.xml");
 
   </script>
-
-    <!-- Scroll Animation -->
-  <style>
-    @keyframes scroll-left {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-  </style>
 
 </body>
 </html>
