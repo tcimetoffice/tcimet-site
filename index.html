@@ -233,9 +233,15 @@
       <section id="forecast">
     <h2>Latest Forecasts & Warnings</h2>
     <h2>3-Day Weather Forecast</h2>
-    <img src="assets/forecast-placeholder.png" alt="Forecast Graphic" style="max-width: 100%; height: auto; border: 1px solid #ccc;">
-    <p><small>Updated forecast graphic will appear here</small></p>
-    <p><a href="assets/forecast.pdf" download>📄 Download Full Weather Forecast (PDF)</a></p>
+    <img id="forecastImg"
+    src="https://raw.githubusercontent.com/tcimetoffice/tcimet-site/main/forecast.jpg"
+    style="width:100%; max-width:600px;">
+
+    <p>
+    <a href="https://raw.githubusercontent.com/tcimetoffice/tcimet-site/main/forecast.pdf" target="_blank">
+    📄 Download Full Weather Forecast
+    </a>
+    </p>
 
     <h2>Latest 3-Day Forecast Video</h2>
   <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin-top: 10px;">
@@ -503,3 +509,4 @@ fetchLatestAlert("alert-ht", "https://cap-sources.s3.amazonaws.com/tc-gov-ht/rss
 
 </body>
 </html>
+
